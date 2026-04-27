@@ -42,6 +42,8 @@ public class TareaServicio
             existente.setDescripcion(tareaActualizada.getDescripcion());
             existente.setEstado(tareaActualizada.getEstado());
             existente.setPrioridad(tareaActualizada.getPrioridad());
+            existente.setResponsable(tareaActualizada.getResponsable());
+            existente.setFechaLimite(tareaActualizada.getFechaLimite());
             return repositorio.save(existente);
     }
 

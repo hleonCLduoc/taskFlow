@@ -26,6 +26,10 @@ public class Tarea {
 
     private String prioridad;
 
+    private String responsable;
+
+    private String fechaLimite;
+
 
 
 
