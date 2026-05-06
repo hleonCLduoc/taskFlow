@@ -1,37 +1,40 @@
 package cl.app.taskflow.service;
 
+import cl.app.taskflow.exception.ResourceNotFoundException;
 import cl.app.taskflow.model.Tarea;
-import cl.app.taskflow.repository.TareaRepositorio;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class TareaServicio
 
 {
-    @Autowired
-    TareaRepositorio repositorio;
 
-    public List <Tarea> listar(){
-        return repositorio.findAll();
+    private List <Tarea> listaTareas = new ArrayList<>();
+    private Long proximoId = 1L ;
+    public List<Tarea>listar(){
+        return listaTareas;
     }
 
-    public Tarea crear(Tarea tarea){
-        return repositorio.save(tarea);
+    public Tarea crear(Tarea nuevaTarea){
+        nuevaTarea.setId(proximoId);
+        proximoId++;
+        listaTareas.add(nuevaTarea);
+        return nuevaTarea;
     }
 
     public Tarea obtener(Long id){
-        return repositorio.findById(id)
-                .orElseThrow(()-> new RuntimeException("Tarea no encontrada"));
+        return listaTareas.stream()
+                .filter(t-> t.getId().equals(id))
+                .findFirst()
+                .orElseThrow(() -> new ResourceNotFoundException("no se encontro la tarea con ID "+id));
     }
 
 
     public void eliminar(Long id){
-        obtener(id);
-        repositorio.delete(id);
+        Tarea tarea = obtener(id);
+        listaTareas.remove(tarea);
 
 
     }
@@ -44,12 +47,12 @@ public class TareaServicio
             existente.setPrioridad(tareaActualizada.getPrioridad());
             existente.setResponsable(tareaActualizada.getResponsable());
             existente.setFechaLimite(tareaActualizada.getFechaLimite());
-            return repositorio.save(existente);
+            return existente;
     }
 
-    public List<Tarea> buscarPorPrioridad(String prioridad){
-        return repositorio.findAll().stream()
-                .filter(t -> t.getPrioridad().equalsIgnoreCase(prioridad))
+    public List<Tarea> buscarPorPrioridad(int prioridad) {
+        return listaTareas.stream()
+                .filter(t -> t.getPrioridad() == prioridad)
                 .toList();
     }
 }

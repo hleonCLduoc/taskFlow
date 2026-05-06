@@ -1,9 +1,12 @@
 package cl.app.taskflow.controller;
 
+import cl.app.taskflow.exception.ResourceNotFoundException;
 import cl.app.taskflow.model.Tarea;
 import cl.app.taskflow.service.TareaServicio;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,17 +28,29 @@ public class TareaController {
 
     @PostMapping
     public ResponseEntity<Tarea> crear(@Valid @RequestBody Tarea tarea){
-        return ResponseEntity.ok(tareaServicio.crear(tarea));
+        Tarea nuevaTarea = tareaServicio.crear(tarea);
+        return new ResponseEntity<>(nuevaTarea, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Tarea> obtener(@PathVariable Long id){
-        return ResponseEntity.ok(tareaServicio.obtener(id));
+        Tarea tarea = tareaServicio.obtener(id);
+        if (tarea== null){
+        throw new ResourceNotFoundException("Tarea con Id"+ id + "no Encontrada");
     }
+        return ResponseEntity.ok(tarea);
+    }
+
+
     @PutMapping("/{id}")
     public ResponseEntity<Tarea> actualizar(@PathVariable Long id , @Valid @RequestBody Tarea tarea){
-        return ResponseEntity.ok(tareaServicio.actualizar(id, tarea));
+        Tarea actualizada = tareaServicio.actualizar(id, tarea);
+        if (actualizada == null){
+            throw new ResourceNotFoundException("no se pudo actualizar = Tarea con ID "+ id + "no existe");
+        }
+        return ResponseEntity.ok(actualizada);
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id){
@@ -44,7 +59,7 @@ public class TareaController {
     }
 
     @GetMapping("/prioridades/{prioridad}")
-    public ResponseEntity<List<Tarea>> buscarPorPrioridad(@PathVariable String prioridad){
+    public ResponseEntity<List<Tarea>> buscarPorPrioridad(@PathVariable int prioridad) {
         return ResponseEntity.ok(tareaServicio.buscarPorPrioridad(prioridad));
     }
 
