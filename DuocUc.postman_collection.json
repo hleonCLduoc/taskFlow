@@ -14,7 +14,38 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n    \"id\": 1,\r\n    \"titulo\": \"camino camino\",\r\n    \"descripcion\": \"lalala\",\r\n    \"estado\": \"ALTA\",\r\n    \"prioridad\": \"baja\",\r\n    \"responsable\": \"Hugo León\",\r\n    \"fechaLimite\": \"2026-04-30\"\r\n}",
+          "raw": "{\r\n    \"nombre\": \"Reunion el lunes - ACTUALIZADA\",\r\n    \"descripcion\": \"Se actualizó el presupuesto\",\r\n    \"prioridad\": 3,\r\n    \"responsable\": \"Hugo León\",\r\n    \"fechaVencimiento\": \"2026-06-15\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/v1/tareas/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "tareas",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "put actualizar tarea forzar error",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"nombre\": \"Reunion el lunes - ACTUALIZADA\",\r\n    \"descripcion\": \"Se actualizó el presupuesto\",\r\n    \"prioridad\": 3,\r\n    \"responsable\": \"Hugo León\",\r\n    \"fechaVencimiento\": \"2026-06-15\"\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -45,7 +76,67 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n    \"id\": 1,\r\n    \"titulo\": \"Reunion el lunes con cliente \",\r\n    \"descripcion\": \"presupuesto completo app dual \",\r\n    \"estado\": \"PENDIENTE\",\r\n    \"prioridad\": \"ALTA\"    ,\r\n    \"responsable\": \"Hugo León\",\r\n    \"fechaLimite\": \"2026-04-27\"\r\n}\r\n",
+          "raw": "{\r\n    \"nombre\": \"Reunion el lunes con cliente\",\r\n    \"descripcion\": \"presupuesto completo app dual\",\r\n    \"prioridad\": 5,\r\n    \"responsable\": \"Hugo León\",\r\n    \"fechaVencimiento\": \"2026-05-20\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/v1/tareas",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "tareas"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Post crear una tarea forzar error",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"nombre\": \"\",\r\n    \"descripcion\": \"Prueba de error\",\r\n    \"prioridad\": 10,\r\n    \"fechaVencimiento\": \"2020-01-01\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/v1/tareas",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "tareas"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Post crear una tarea forzar error 2",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"nombre\": \"\",\r\n    \"descripcion\": \"Esta prueba debe fallar\",\r\n    \"prioridad\": 10,\r\n    \"responsable\": \"Hugo León\",\r\n    \"fechaVencimiento\": \"2020-01-01\"\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -72,7 +163,22 @@
       "name": "filtrar por prioridades",
       "request": {
         "method": "GET",
-        "header": []
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/v1/tareas/prioridades/5",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "tareas",
+            "prioridades",
+            "5"
+          ]
+        }
       },
       "response": []
     },
@@ -81,6 +187,40 @@
       "request": {
         "method": "GET",
         "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "listar todas las tareas Forzar error",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/v1/tareas/999",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "tareas",
+            "999"
+          ]
+        }
       },
       "response": []
     },

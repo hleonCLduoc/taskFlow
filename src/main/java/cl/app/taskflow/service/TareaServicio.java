@@ -2,57 +2,53 @@ package cl.app.taskflow.service;
 
 import cl.app.taskflow.exception.ResourceNotFoundException;
 import cl.app.taskflow.model.Tarea;
+import cl.app.taskflow.repository.TareaRepositorio;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.*;
-import static java.util.stream.Collectors.toList;
+
+import java.util.List;
 
 @Service
-public class TareaServicio
+public class TareaServicio {
 
-{
+    @Autowired
+    private TareaRepositorio repositorio;
 
-    private List <Tarea> listaTareas = new ArrayList<>();
-    private Long proximoId = 1L ;
-    public List<Tarea>listar(){
-        return listaTareas;
+    private Long generadorId = 1L; //
+
+    public List<Tarea> obtenerTodas() {
+        return repositorio.findAll();
     }
 
-    public Tarea crear(Tarea nuevaTarea){
-        nuevaTarea.setId(proximoId);
-        proximoId++;
-        listaTareas.add(nuevaTarea);
-        return nuevaTarea;
+    public Tarea obtenerPorId(Long id) {
+        return repositorio.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("No se encontró la tarea con ID: " + id));
     }
 
-    public Tarea obtener(Long id){
-        return listaTareas.stream()
-                .filter(t-> t.getId().equals(id))
-                .findFirst()
-                .orElseThrow(() -> new ResourceNotFoundException("no se encontro la tarea con ID "+id));
+    public Tarea crearTarea(Tarea tarea) {
+        if (tarea.getId() == null) {
+            tarea.setId(generadorId++);
+        }
+        return repositorio.save(tarea);
     }
 
-
-    public void eliminar(Long id){
-        Tarea tarea = obtener(id);
-        listaTareas.remove(tarea);
-
-
+    public Tarea actualizarTarea(Long id, Tarea tareaActualizada) {
+        Tarea existente = obtenerPorId(id);
+        existente.setNombre(tareaActualizada.getNombre());
+        existente.setDescripcion(tareaActualizada.getDescripcion());
+        existente.setPrioridad(tareaActualizada.getPrioridad());
+        existente.setFechaVencimiento(tareaActualizada.getFechaVencimiento());
+        return existente;
     }
 
-    public Tarea actualizar(Long id, Tarea tareaActualizada){
-            Tarea existente = obtener(id);
-            existente.setTitulo(tareaActualizada.getTitulo());
-            existente.setDescripcion(tareaActualizada.getDescripcion());
-            existente.setEstado(tareaActualizada.getEstado());
-            existente.setPrioridad(tareaActualizada.getPrioridad());
-            existente.setResponsable(tareaActualizada.getResponsable());
-            existente.setFechaLimite(tareaActualizada.getFechaLimite());
-            return existente;
+    public void eliminarTarea(Long id) {
+        Tarea tareaExistente = obtenerPorId(id);
+        repositorio.delete(tareaExistente.getId());
     }
 
     public List<Tarea> buscarPorPrioridad(int prioridad) {
-        return listaTareas.stream()
-                .filter(t -> t.getPrioridad() == prioridad)
+        return repositorio.findAll().stream()
+                .filter(t -> t.getPrioridad() != null && t.getPrioridad() == prioridad)
                 .toList();
     }
 }

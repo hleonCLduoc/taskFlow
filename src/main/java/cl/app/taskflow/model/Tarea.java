@@ -1,41 +1,31 @@
-package cl.app.taskflow.model;
+    package cl.app.taskflow.model;
 
+    import jakarta.validation.constraints.Future;
+    import jakarta.validation.constraints.Max;
+    import jakarta.validation.constraints.Min;
+    import jakarta.validation.constraints.NotBlank;
+    import lombok.*;
+    import java.time.LocalDate;
 
-import jakarta.validation.constraints.Future;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import lombok.*;
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Data
+    public class Tarea {
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
+        private Long id;
 
-public class Tarea {
-    private Long id;
+        @NotBlank(message = "El nombre de la tarea no puede estar vacío")
+        private String nombre;
 
-    @NotBlank(message = "el titulo es requerido")
-    private String titulo;
+        @NotBlank(message = "La descripción no puede estar vacía")
+        private String descripcion;
 
-    @NotBlank(message = "La descripcion no puede estar vacia.")
-    private String descripcion;
+        @Min(value = 1, message = "La prioridad mínima es 1")
+        @Max(value = 5, message = "La prioridad máxima es 5")
+        private Integer prioridad;
 
-    @NotBlank(message = "El estado es obligatorio")
-    private String estado;
-
-    @Min(value= 1, message= "la prioridad minima es 1.")
-    @Max(value = 5, message ="la prioridad maxima es 5.")
-    private String prioridad;
-
-    @NotBlank(message = "El responsables es obligatorio.")
-    private String responsable;
-
-    @Future(message= "La fecha limite debe ser una fecha futura.")
-    private String fechaLimite;
-
-
-
-
-}
+        @Future(message = "La fecha de vencimiento debe estar en el futuro")
+        private LocalDate fechaVencimiento;
+    }
